@@ -17,7 +17,8 @@
     "import matplotlib.pyplot as plt\n",
     "import numpy as np\n",
     "from skimage import data, exposure, transform\n",
-    "from mpl_toolkits.mplot3d import axes3d"
+    "from mpl_toolkits.mplot3d import axes3d\n",
+    "%matplotlib notebook"
    ],
    "metadata": {
     "collapsed": false,
@@ -31,14 +32,10 @@
    "execution_count": 2,
    "outputs": [],
    "source": [
-    "plt.rcParams['text.color'] = 'black'\n",
-    "plt.rcParams['xtick.color'] = 'black'\n",
-    "plt.rcParams['ytick.color'] = 'black'\n",
-    "plt.rcParams['axes.labelcolor'] = 'black'\n",
-    "font = {'family' : 'normal',\n",
-    "        'weight' : 'normal',\n",
-    "        'size'   : 18}\n",
-    "plt.rc(font)"
+    "plt.rcParams['text.color'] = 'w'\n",
+    "plt.rcParams['xtick.color'] = 'w'\n",
+    "plt.rcParams['ytick.color'] = 'w'\n",
+    "plt.rcParams['axes.labelcolor'] = 'w'"
    ],
    "metadata": {
     "collapsed": false,
@@ -73,16 +70,17 @@
    "source": [
     "image = data.coins()\n",
     "plt.figure(figsize=(12, 5))\n",
-    "ax1=plt.subplot(121)\n",
+    "plt.subplot(121)\n",
+    "ax1=plt.subplot(121, frameon=False)\n",
     "ax1.imshow(image,cmap='gray')\n",
-    "ax1.set_title(\"Mince\")\n",
+    "ax1.set_title(\"Coins grayscale image\")\n",
     "ax2 = plt.subplot(1,2,2)\n",
-    "ax2.set_title(\"Jasovy histogram\")\n",
-    "ax2.set_xlabel(\"Jasové úrovne\")\n",
-    "ax2.set_ylabel(\"Počet pixelov\")\n",
     "raveled_image = image.ravel()\n",
     "reshaped_image = np.reshape(image,(image.shape[0]*image.shape[1],))\n",
-    "pt1 = ax2.hist(reshaped_image, bins=255, histtype='bar', color='red');"
+    "pt1 = ax2.hist(reshaped_image, bins=255, histtype='bar', color='red')\n",
+    "ax2.set_title(\"Jasovy histogram\")\n",
+    "ax2.set_xlabel(\"Pixel intensity\")\n",
+    "ax2.set_ylabel(\"Pixel count \")"
    ],
    "metadata": {
     "collapsed": false,
@@ -125,11 +123,20 @@
     }
    ],
    "source": [
-    "fig, axes = plt.subplots(2,4,figsize=(15, 10))\n",
+    "fig = plt.figure(figsize=(15, 10))\n",
+    "axes = np.zeros((2,4),dtype=np.object)\n",
+    "axes[0,0] = plt.subplot(2, 4, 1)\n",
+    "axes[0,1] = plt.subplot(2, 4, 2)\n",
+    "axes[0,2] = plt.subplot(2, 4, 3)\n",
+    "axes[0,3] = plt.subplot(2, 4, 4)\n",
+    "axes[1,0] = plt.subplot(2, 4, 5)\n",
+    "axes[1,1] = plt.subplot(2, 4, 6)\n",
+    "axes[1,2] = plt.subplot(2, 4, 7)\n",
+    "axes[1,3] = plt.subplot(2, 4, 8)\n",
     "\n",
     "axes[0,0].imshow(image,cmap='gray')\n",
     "axes[1,0].hist(image.ravel(), bins=20, histtype='bar', color='red')\n",
-    "axes[0,0].set_title(\"Pôvodný obrázok\")\n",
+    "axes[0,0].set_title(\"Original image\")\n",
     "\n",
     "img_eq = exposure.equalize_hist(image)\n",
     "axes[0,1].imshow(img_eq,cmap='gray')\n",
@@ -144,7 +151,8 @@
     "img_contrast_enhanced = exposure.equalize_adapthist(exposure.adjust_gamma(image, 0.5))\n",
     "axes[0,3].imshow(img_contrast_enhanced,cmap='gray')\n",
     "axes[1,3].hist(img_contrast_enhanced.ravel(), bins=20, histtype='bar', color='blue')\n",
-    "axes[0,3].set_title(\"Contrast adjust\");"
+    "axes[0,3].set_title(\"Contrast adjust\")\n",
+    "\n"
    ],
    "metadata": {
     "collapsed": false,
@@ -171,15 +179,15 @@
     "image=data.moon()\n",
     "plt.figure(figsize=(12, 5))\n",
     "plt.subplot(121)\n",
-    "ax1=plt.subplot(121)\n",
+    "ax1=plt.subplot(121, frameon=False)\n",
     "ax1.imshow(image,cmap='gray')\n",
-    "ax1.set_title(\"Mesiac\")\n",
+    "ax1.set_title(\"Moon grayscale image\")\n",
     "ax2 = plt.subplot(1,2,2)\n",
     "raveled_image = image.ravel()\n",
     "pt1 = ax2.hist(np.reshape(image,(image.shape[0]*image.shape[1],)), bins=255, histtype='bar', color='red')\n",
     "ax2.set_title(\"Jasovy histogram\")\n",
-    "ax2.set_xlabel(\"Jasové úrovne\")\n",
-    "ax2.set_ylabel(\"Počet pixelov\")"
+    "ax2.set_xlabel(\"Pixel intensity\")\n",
+    "ax2.set_ylabel(\"Pixel count \")"
    ],
    "metadata": {
     "collapsed": false,
@@ -193,38 +201,35 @@
    "execution_count": null,
    "outputs": [],
    "source": [
-    "fig, axes = plt.subplots(2,4,figsize=(20, 20))\n",
+    "fig = plt.figure(figsize=(15, 10))\n",
+    "axes = np.zeros((2,4),dtype=np.object)\n",
+    "axes[0,0] = plt.subplot(2, 4, 1)\n",
+    "axes[0,1] = plt.subplot(2, 4, 2)\n",
+    "axes[0,2] = plt.subplot(2, 4, 3)\n",
+    "axes[0,3] = plt.subplot(2, 4, 4)\n",
+    "axes[1,0] = plt.subplot(2, 4, 5)\n",
+    "axes[1,1] = plt.subplot(2, 4, 6)\n",
+    "axes[1,2] = plt.subplot(2, 4, 7)\n",
+    "axes[1,3] = plt.subplot(2, 4, 8)\n",
     "\n",
     "axes[0,0].imshow(image,cmap='gray')\n",
-    "axes[1,0].set_title(\"Histogram\")\n",
-    "axes[1,0].set_xlabel(\"Jasové úrovne\")\n",
-    "axes[1,0].set_ylabel(\"Počet pixelov\")\n",
     "axes[1,0].hist(image.ravel(), bins=20, histtype='bar', color='red')\n",
     "axes[0,0].set_title(\"Original image\")\n",
     "\n",
     "img_eq = exposure.equalize_hist(image)\n",
     "axes[0,1].imshow(img_eq,cmap='gray')\n",
-    "axes[1,1].set_title(\"Histogram\")\n",
-    "axes[1,1].set_xlabel(\"Jasové úrovne\")\n",
-    "axes[1,1].set_ylabel(\"Počet pixelov\")\n",
     "axes[1,1].hist(img_eq.ravel(), bins=20, histtype='bar', color='blue')\n",
     "axes[0,1].set_title(\"Equalizing histogram adjust\")\n",
     "\n",
     "img_adapt_eq = exposure.equalize_adapthist(image)\n",
     "axes[0,2].imshow(img_adapt_eq,cmap='gray')\n",
-    "axes[1,2].set_title(\"Histogram\")\n",
-    "axes[1,2].set_xlabel(\"Jasové úrovne\")\n",
-    "axes[1,2].set_ylabel(\"Počet pixelov\")\n",
     "axes[1,2].hist(img_adapt_eq.ravel(), bins=20, histtype='bar', color='blue')\n",
     "axes[0,2].set_title(\"Adaptive histogram adjust\")\n",
     "\n",
     "img_contrast_enhanced = exposure.adjust_gamma(image, 2)\n",
     "axes[0,3].imshow(img_contrast_enhanced,cmap='gray')\n",
-    "axes[1,3].set_title(\"Histogram\")\n",
-    "axes[1,3].set_xlabel(\"Jasové úrovne\")\n",
-    "axes[1,3].set_ylabel(\"Počet pixelov\")\n",
     "axes[1,3].hist(img_contrast_enhanced.ravel(), bins=20, histtype='bar', color='blue')\n",
-    "axes[0,3].set_title(\"Contrast adjust\");"
+    "axes[0,3].set_title(\"Contrast adjust\")"
    ],
    "metadata": {
     "collapsed": false,
@@ -282,29 +287,21 @@
     "plt.figure()\n",
     "y= (((x-0.5)*p)/(1+abs((x-0.5)*p))+c)/(2*c)\n",
     "plt.plot(x,y)\n",
-    "plt.title('Úprava jasovej stupnice')\n",
-    "plt.xlabel('Vstupný jas')\n",
-    "plt.ylabel('Výstupný jas')\n",
+    "plt.title('Uprava jasovej stupnice')\n",
+    "plt.xlabel('vstupny jas')\n",
+    "plt.ylabel('out jas')\n",
     "\n",
     "plt.figure(figsize=(15, 10))\n",
     "plt.subplot(221)\n",
-    "plt.title('Mesiac')\n",
     "plt.imshow(data.moon(),cmap='gray')\n",
     "plt.subplot(222)\n",
-    "plt.title('Mesiac')\n",
     "im = data.moon()/255\n",
     "adj_im = (((im-0.5)*p)/(1+abs((im-0.5)*p))+c)/(2*c)\n",
     "plt.imshow(adj_im,cmap='gray')\n",
     "plt.subplot(223)\n",
     "plt.hist(data.moon().ravel(), bins=20, histtype='bar', color='red')\n",
-    "plt.title(\"Histogram\")\n",
-    "plt.xlabel(\"Jasové úrovne\")\n",
-    "plt.ylabel(\"Počet pixelov\")\n",
     "plt.subplot(224)\n",
-    "plt.hist((adj_im*255).ravel(), bins=20, histtype='bar', color='red');\n",
-    "plt.title(\"Histogram\")\n",
-    "plt.xlabel(\"Jasové úrovne\")\n",
-    "plt.ylabel(\"Počet pixelov\");"
+    "plt.hist((adj_im*255).ravel(), bins=20, histtype='bar', color='red')"
    ],
    "metadata": {
     "collapsed": false,
@@ -342,7 +339,7 @@
     "ax.set_xlabel('Red')\n",
     "ax.set_ylabel('Green')\n",
     "ax.set_zlabel('Blue')\n",
-    "ax.view_init(elev=30., azim=50);"
+    "ax.view_init(elev=30., azim=50)"
    ],
    "metadata": {
     "collapsed": false,
@@ -352,19 +349,27 @@
    }
   },
   {
-   "cell_type": "markdown",
+   "cell_type": "code",
+   "execution_count": null,
+   "outputs": [],
    "source": [
-    "Bonus\n",
-    "1. Vypoctajte kolko roznych histogramov existuje pre sedotonovy obrazok (0-255) s rozmermi h * w (+2b)\n",
+    "# Bonus\n",
+    "#1. Vypoctajte kolko roznych histogramov existuje pre sedotonovy obrazok (0-255) s rozmermi h * w (+2b)\n",
     "\n",
-    "2. Do dalsieho cvika JE mozne interaktivne pracovat s plotmi v ipythone teda v notebooku? Najdite opitmalnu kniznicu na interakciu v pythone.\n",
-    "https://jakevdp.github.io/PythonDataScienceHandbook/04.12-three-dimensional-plotting.html\n",
-    "https://matplotlib.org/3.3.1/users/interactive.html\n",
-    "https://stackoverflow.com/questions/14261903/how-can-i-open-the-interactive-matplotlib-window-in-ipython-notebook\n",
-    "Za dobre porovnanie 3 kniznic v 2D a 3D aj s  videom a komentarom (+5b)"
+    "#2. Do dalsieho cvika JE mozne interaktivne pracovat s plotmi v ipythone teda v notebooku? Najdite opitmalnu kniznicu na interakciu v pythone.\n",
+    "# https://jakevdp.github.io/PythonDataScienceHandbook/04.12-three-dimensional-plotting.html\n",
+    "# https://matplotlib.org/3.3.1/users/interactive.html\n",
+    "# https://stackoverflow.com/questions/14261903/how-can-i-open-the-interactive-matplotlib-window-in-ipython-notebook\n",
+    "# Za dobre porovnanie 3 kniznic v 2D a 3D aj s  videom a komentarom (+5b)\n",
+    "\n",
+    "# Povinne\n",
+    "# Dokoncit cvicenie 1:1 podobat na to co je v knihe."
    ],
    "metadata": {
-    "collapsed": false
+    "collapsed": false,
+    "pycharm": {
+     "name": "#%%\n"
+    }
    }
   }
  ],
